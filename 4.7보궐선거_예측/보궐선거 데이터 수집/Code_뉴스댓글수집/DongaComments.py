@@ -189,13 +189,13 @@ def getDongaComment(link_df):
 # In[29]:
 
 
-import pandas as pd
+# import pandas as pd
 
-df = pd.read_csv('../동아일보_link.csv')
-df = df[:1]
+# df = pd.read_csv('../동아일보_link.csv')
+# df = df[:1]
 
-df_comments = getDongaComment(df)
-df_comments
+# df_comments = getDongaComment(df)
+# df_comments
 
 
 # In[ ]:
