@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 # 더보기 계속 클릭하기
@@ -17,7 +17,7 @@ def clickMore(driver):
             break
 
 
-# In[3]:
+# In[27]:
 
 
 # 한 기사의 댓글 추출
@@ -31,6 +31,7 @@ def getComment(driver):
     comment_dict = {
         '제목' : [],
         '날짜' : [],
+        '작성자' : [],
         '작성일' : [],
         '댓글' : []
     }
@@ -69,6 +70,10 @@ def getComment(driver):
             # 댓글 내용이 든 태그
             a7 = a6.find_elements_by_css_selector('div.module')[0]
             
+            # 작성자
+            data33 = a7.find_elements_by_css_selector('div.nickname')[0].text
+            # print(a8)
+            
             # 작성일 
             data3 = a7.find_elements_by_css_selector('div.createdate')[0].text
             # print(a8)
@@ -79,6 +84,7 @@ def getComment(driver):
             
             comment_dict['제목'].append(data1)
             comment_dict['날짜'].append(data2)
+            comment_dict['작성자'].append(data33)
             comment_dict['작성일'].append(data3)
             comment_dict['댓글'].append(data4)
             
@@ -100,6 +106,10 @@ def getComment(driver):
                 
                 for a12 in a11:
                     
+                    # 작성자
+                    data33 = a12.find_elements_by_css_selector('div.module > div.nickname')[0].text
+                    print(data33)
+                    
                     # 작성일
                     data3 = a12.find_elements_by_css_selector('div.module > div.createdate')[0].text
                     # print(data3)
@@ -110,6 +120,7 @@ def getComment(driver):
                     
                     comment_dict['제목'].append(data1)
                     comment_dict['날짜'].append(data2)
+                    comment_dict['작성자'].append(data33)
                     comment_dict['작성일'].append(data3)
                     comment_dict['댓글'].append(data4)
                    
@@ -130,7 +141,7 @@ def getComment(driver):
         return True
 
 
-# In[ ]:
+# In[28]:
 
 
 def getDongaComment(link_df):
@@ -173,4 +184,34 @@ def getDongaComment(link_df):
             break
 
     print('수집 테스트 완료')
+
+
+# In[29]:
+
+
+import pandas as pd
+
+df = pd.read_csv('../동아일보_link.csv')
+df = df[:1]
+
+df_comments = getDongaComment(df)
+df_comments
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+df
 
