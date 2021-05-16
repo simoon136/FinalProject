@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[4]:
 
 
 # 더보기 계속 클릭하기
@@ -21,7 +21,7 @@ def clickMore(driver):
             break
 
 
-# In[18]:
+# In[5]:
 
 
 # 한 기사의 댓글 추출
@@ -40,11 +40,11 @@ def getComment(driver):
     }
     
     # 기사 제목 & 날짜 태그
-    a1 = driver.find_elements_by_css_selector('#articletitle > div')[0]
+    a1 = driver.find_element_by_css_selector('#articletitle > div')
     
     # 기사 제목
-    data1 = a1.find_elements_by_css_selector('h3')[0].text
-    # print(data1)
+    data1 = driver.find_element_by_css_selector('#jtbcBody').text
+    print(data1)
     
     # 날짜 
     data2 = a1.find_elements_by_css_selector('span > span.i_date')[0].text
@@ -144,9 +144,11 @@ def getJTBCComment(link_df):
         clickMore(driver)
 
         print(f'{idx}번째 기사 댓글 수집 중')
-
-        chk = getComment(driver)
-
+        
+        while True:
+            try:
+                chk = getComment(driver)
+            
         # 기사에 댓글 데이터 정상 수집
         if chk:
             print(f'{idx}번째 기사 댓글 정상 수집 완료')
@@ -163,29 +165,25 @@ def getJTBCComment(link_df):
     print('수집 테스트 완료')
 
 
-# In[13]:
+# In[6]:
 
 
-# # 테스트 코드
-# import pandas as pd
+test = False
+if test:
+    import pandas as pd
+    from selenium import webdriver as wd
+    from IPython.display import clear_output
 
-# df = pd.read_csv('../jtbc_link_이재명.csv')
-# # df = df.loc[50:]
-# # df.reset_index(drop=True, inplace=True)
-# getJTBCComment(df)
+    # 옵션 생성
+    options = wd.ChromeOptions()
+    # 창 숨기는 옵션 추가
+    options.add_argument("headless")
 
+    # 웹 드라이버
+    driver = wd.Chrome('../chromedriver.exe')
+    driver.implicitly_wait(20)
+    clear_output(wait=True)
 
-# In[16]:
-
-
-# df = df[170:]
-# # df = df.loc[50:]
-# df.reset_index(drop=True, inplace=True)
-# getJTBCComment(df)
-
-
-# In[ ]:
-
-
-
+    driver.get('https://news.jtbc.joins.com/article/article.aspx?news_id=NB12004008')
+    getComment(driver)
 
