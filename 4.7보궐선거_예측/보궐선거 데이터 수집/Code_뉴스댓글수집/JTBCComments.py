@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[17]:
 
 
 # 더보기 계속 클릭하기
@@ -21,7 +21,7 @@ def clickMore(driver):
             break
 
 
-# In[3]:
+# In[18]:
 
 
 # 한 기사의 댓글 추출
@@ -34,6 +34,7 @@ def getComment(driver):
     comment_dict = {
         '제목' : [],
         '날짜' : [],
+        '작성자' : [],
         '작성일' : [],
         '댓글' : []
     }
@@ -60,27 +61,33 @@ def getComment(driver):
     else:     
         # 댓글 태그들
         a5 = driver.find_elements_by_css_selector('#TCMT_ContBox > div.cmt_sort')
+        print(a5)
         
         # 댓글 수만큼 반복
         for a6 in a5:
             
             # 댓글 내용이 든 태그
             a7 = a6.find_elements_by_css_selector('div.bd > dl')[0]
-            # print(a7)
+            print(a7)
             
-            # 작성자 & 작성일
+            # 작성자
+            data33 = a7.find_element_by_css_selector('dd.name > .p_name').text
+            print(data33)
+            
+            # 작성일
             data3 = a7.find_elements_by_css_selector('dd.name > span.date')[0].text
-            # print(data3)
+            print(data3)
             
             # 댓글
             data4 = a7.find_elements_by_css_selector('dd.txt > span')[0].text
-            # print(data4)
+            print(data4)
             
             # 답글 수집 제외
             # 쓰여진 답글 찾기 어려움 -> 직접 작성 시도 -> 정상 입력이 되지 않는다는 안내메시지 
             
             comment_dict['제목'].append(data1)
             comment_dict['날짜'].append(data2)
+            comment_dict['작성자'].append(data33)
             comment_dict['작성일'].append(data3)
             comment_dict['댓글'].append(data4)
                    
@@ -105,7 +112,7 @@ def getComment(driver):
         return True
 
 
-# In[ ]:
+# In[19]:
 
 
 def getJTBCComment(link_df):
@@ -113,6 +120,11 @@ def getJTBCComment(link_df):
     import pandas as pd
     from selenium import webdriver as wd
     from IPython.display import clear_output
+    
+    # 옵션 생성
+    options = wd.ChromeOptions()
+    # 창 숨기는 옵션 추가
+    options.add_argument("headless")
     
     num_link = link_df.shape[0]
     # print(link_df.loc[0])
@@ -146,6 +158,34 @@ def getJTBCComment(link_df):
 
         if idx == num_link :
             break
-
+    
+    driver.quit()
     print('수집 테스트 완료')
+
+
+# In[13]:
+
+
+# # 테스트 코드
+# import pandas as pd
+
+# df = pd.read_csv('../jtbc_link_이재명.csv')
+# # df = df.loc[50:]
+# # df.reset_index(drop=True, inplace=True)
+# getJTBCComment(df)
+
+
+# In[16]:
+
+
+# df = df[170:]
+# # df = df.loc[50:]
+# df.reset_index(drop=True, inplace=True)
+# getJTBCComment(df)
+
+
+# In[ ]:
+
+
+
 
